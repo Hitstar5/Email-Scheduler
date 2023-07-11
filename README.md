@@ -1,8 +1,8 @@
 # Email-Scheduler
 
 ##Libraries Used
-Mongodb databse
-SExpress framework
+Mongodb database
+Express framework
 ##In app mail sending using nodemailer with automated mail sending with agenda libarary for Job scheduling
 
 
