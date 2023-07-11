@@ -1,6 +1,4 @@
 const email = require('../model/email');
-
-const {errorStatusCode} = require('../../lib/constants');
 // eslint-disable-next-line max-len
 const {successResponse, errorResponse} = require('../../lib/validation/responseValidation');
 
@@ -11,7 +9,7 @@ exports.scheduleResponse = (req, res) => {
     res.status(200).send(response);
   }).catch((err) => {
     const response = errorResponse({data: err});
-    res.status(errorStatusCode).send(response);
+    res.status(400).send(response);
   });
 };
 
@@ -21,7 +19,7 @@ exports.rescheduleResponse = (req, res) => {
     res.status(200).send(response);
   }).catch((err) => {
     const response = errorResponse({data: err});
-    res.status(errorStatusCode).send(response);
+    res.status(400).send(response);
   });
 };
 
@@ -31,7 +29,7 @@ exports.getAllScheduleResponse = (req, res) => {
     res.status(200).send(response);
   }).catch((err) => {
     const response = errorResponse({data: err});
-    res.status(errorStatusCode).send(response);
+    res.status(400).send(response);
   });
 };
 
@@ -41,7 +39,7 @@ exports.getScheduleIdResponse = (req, res) => {
     res.status(200).send(response);
   }).catch((err) => {
     const response = errorResponse({data: err});
-    res.status(errorStatusCode).send(response);
+    res.status(400).send(response);
   });
 };
 
@@ -51,7 +49,7 @@ exports.deleteScheduleIdResponse = (req, res) => {
     res.status(200).send(response);
   }).catch((err) => {
     const response = errorResponse({data: err});
-    res.status(errorStatusCode).send(response);
+    res.status(400).send(response);
   });
 };
 
@@ -62,6 +60,6 @@ exports.getAllFailedScheduleResponse = (req, res) => {
     res.status(200).send(response);
   }).catch((err) => {
     const response = errorResponse({data: err});
-    res.status(errorStatusCode).send(response);
+    res.status(400).send(response);
   });
 };
