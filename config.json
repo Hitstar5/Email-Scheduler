@@ -1,0 +1,5 @@
+{
+    "mongo": {
+    "emailRecordUrl" : "mongodb://localhost:27017/EmailRecord"
+}
+}

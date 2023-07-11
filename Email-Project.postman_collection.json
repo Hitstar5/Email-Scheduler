@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "8b442d8b-f540-416c-9ab3-72c047747891",
+		"name": "Email-Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "email",
+			"item": [
+				{
+					"name": "schedule email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"balendulabh@gmail.com\", \r\n    \"content\":\"hello all\",\r\n    \"date\": \"2023-07-10\", \r\n    \"time\": \"11:56:00 PM\", \r\n    \"timezone\":\"IST\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{email_base_url}}/email",
+							"host": [
+								"{{email_base_url}}"
+							],
+							"path": [
+								"email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reschedule an email",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"scheduleId\":\"64abb50e957df8289417adb980\",\r\n    \"email\": \"rajjjj@gmaill.com\", \r\n    \"content\":\"hello all\",\r\n    \"date\": \"2024-12-10\", \r\n    \"time\": \"10:20:00 AM\", \r\n    \"timezone\":\"PST\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{email_base_url}}/email",
+							"host": [
+								"{{email_base_url}}"
+							],
+							"path": [
+								"email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all schedule",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{email_base_url}}/email?searchText=&sortType=createdAt&limit=1&page=0",
+							"host": [
+								"{{email_base_url}}"
+							],
+							"path": [
+								"email"
+							],
+							"query": [
+								{
+									"key": "searchText",
+									"value": ""
+								},
+								{
+									"key": "sortType",
+									"value": "createdAt"
+								},
+								{
+									"key": "limit",
+									"value": "1"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get schedule by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{email_base_url}}/email/schedule/64abb50e957df8289417adb0",
+							"host": [
+								"{{email_base_url}}"
+							],
+							"path": [
+								"email",
+								"schedule",
+								"64abb50e957df8289417adb0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete scheduled email by id",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "get failed or sent list",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{email_base_url}}/email/list/status?searchText=failed&limit=20&page=0",
+							"host": [
+								"{{email_base_url}}"
+							],
+							"path": [
+								"email",
+								"list",
+								"status"
+							],
+							"query": [
+								{
+									"key": "searchText",
+									"value": "failed"
+								},
+								{
+									"key": "limit",
+									"value": "20"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
