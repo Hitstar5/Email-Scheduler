@@ -28,4 +28,34 @@ agenda.define('emailJobCron', async (job) => {
   }
 });
 
+
+// (async function() {
+//   await agenda.start();
+//   await agenda.every('50 seconds', 'emailJobCron');
+// })();
+
+
+// agenda.define('emailJobCron', async (job) => {
+//   const today = new Date();
+//   findCase = {status: 'scheduled', scheduledAt: {$lte: today}};
+
+//   const emailList = await emailModel.find(findCase)
+//       .lean();
+//   if (emailList.length>0) {
+//     emailList.forEach(async (obj) => {
+//       console.log(obj);
+//       const result = await sendEmail({
+//         emailTo: obj?.email,
+//         subject: 'Email-Scheduler',
+//         content: obj.content,
+//       });
+//       if (result) {
+//         emailModel.collection.findOneAndUpdate({_id: obj._id}, {$set: {status: 'sent', updatedAt: new Date()}}, {upsert: true});
+//       } else {
+//         emailModel.collection.findOneAndUpdate({_id: obj._id}, {$set: {status: 'failed', updatedAt: new Date()}}, {upsert: true});
+//       }
+//     });
+//   }
+// });
+
 module.exports = agenda;
