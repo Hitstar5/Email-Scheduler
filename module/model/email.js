@@ -1,10 +1,11 @@
+/* eslint-disable max-len */
 const mongoose = require('mongoose');
 const config = require('../../config.json');
 const conEmailRecord = mongoose.createConnection(config.mongo.emailRecordUrl);
 
 const moment = require('moment');
 const {DateTime} = require('luxon');
-
+const agenda = require('../../jobs/agenda.js');
 const {
   errorMessage,
   successMessage,
@@ -54,6 +55,10 @@ email.schedule = req = (req) => {
       if (err) {
         reject(err);
       } else {
+        agenda.start();
+        agenda.schedule(scheduledAt, 'emailJobCron', {
+          _id: id.toString(), email: email, content: content, scheduledAt: scheduledAt,
+        });
         resolve(successMessage.emailScheduled);
       }
     });
