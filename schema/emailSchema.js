@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
+
 const emailSchema = new mongoose.Schema({
   _id: {
     type: String,
@@ -30,6 +31,9 @@ const emailSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
     default: new Date(),
+  },
+  jobId: {
+    type: String,
   },
 });
 

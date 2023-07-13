@@ -51,15 +51,24 @@ email.schedule = req = (req) => {
       createdAt: new Date(),
     };
 
-    emailModel.collection.insertOne(insertObj, (err, res) => {
+    emailModel.collection.insertOne(insertObj, async (err, res) => {
       if (err) {
-        reject(err);
+        reject(errorMessage.tryAgain);
       } else {
+        const documentId = res?.insertedId;
         agenda.start();
-        agenda.schedule(scheduledAt, 'emailJobCron', {
-          _id: id.toString(), email: email, content: content, scheduledAt: scheduledAt,
+        const job = await agenda.create('emailJobCron', {
+          _id: documentId, email: email, content: content,
+        }).schedule(scheduledAt).priority('high').save();
+
+        Promise.resolve(job).then(async (res)=>{
+          if (res?.attrs?._id) {
+            const finalResult = await emailModel.collection.findOneAndUpdate({_id: documentId}, {$set: {jobId: res.attrs._id.toString()}}, {upsert: true});
+            if (finalResult) {
+              resolve(successMessage.emailScheduled);
+            }reject(errorMessage.tryAgain);
+          }
         });
-        resolve(successMessage.emailScheduled);
       }
     });
   });
@@ -90,7 +99,14 @@ email.reschedule = req = (req) => {
       return;
     }
 
-    updateObj = {
+    const findCase = {_id: scheduleId};
+
+    const documentData = await await emailModel.findOne(findCase).lean();
+    if (!documentData) {
+      return reject(errorMessage.emailNotRescheduled);
+    }
+
+    const updateObj = {
       email: email,
       content: content,
       status: 'scheduled',
@@ -103,14 +119,24 @@ email.reschedule = req = (req) => {
         {_id: scheduleId},
         {$set: updateObj},
         {new: true},
-        (err, res) => {
+        async (err, res) => {
           if (err) {
             reject(err);
           } else {
             if (res.value) {
-              resolve(successMessage.emailRescheduled);
+              const jobId = new mongoose.Types.ObjectId(documentData.jobId);
+              agenda.start();
+              const job = await agenda
+                  .create('emailJobCron', {_id: scheduleId, email: email, content: content})
+                  .schedule(scheduledAt).unique({'_id': jobId})
+                  .save();
+              if (job) {
+                resolve(successMessage.emailRescheduled);
+              } else {
+                reject(errorMessage.emailNotRescheduled);
+              }
             } else {
-              resolve(errorMessage.emailNotRescheduled);
+              reject(errorMessage.emailNotRescheduled);
             }
           }
         },
@@ -162,8 +188,15 @@ email.deleteScheduleId = (req) => {
     const {id} = req.params;
 
     const findCase = {_id: id};
+
+    const documentData = await await emailModel.findOne(findCase).lean();
+    if (!documentData) {
+      return reject(errorMessage.emailNotRescheduled);
+    }
     const result = await emailModel.findOneAndDelete(findCase);
     if (result) {
+      const jobId = new mongoose.Types.ObjectId(documentData.jobId);
+      await agenda.cancel({_id: jobId});
       resolve(successMessage.emailDeleted);
     } else {
       reject(errorMessage.notFound);
