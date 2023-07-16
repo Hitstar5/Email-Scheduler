@@ -11,7 +11,14 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Hitstar5/Email-Scheduler.git"
-  },
+  },  
+  "keywords": [
+    "agenda",
+    "nodemailer",
+    "schedule",
+    "job",
+    "cron"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
